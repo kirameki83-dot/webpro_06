@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IIDX スコア一覧</title>
+    <style>
+        :root {
+            color-scheme: light dark;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+            margin: 2rem;
+            line-height: 1.6;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+
+        .toolbar form {
+            display: flex;
+            gap: .4rem;
+            align-items: center;
+        }
+
+        .toolbar input[type="search"] {
+            padding: .4rem .6rem;
+            border: 1px solid #aaa;
+            border-radius: .4rem;
+            width: 200px;
+        }
+
+        .toolbar select {
+            padding: .4rem .6rem;
+            border: 1px solid #aaa;
+            border-radius: .4rem;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 960px;
+        }
+
+        th,
+        td {
+            padding: .6rem .8rem;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        thead th {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, .8);
+            backdrop-filter: blur(4px);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        thead th:hover {
+            background: rgba(0, 0, 0, .05);
+        }
+
+        tbody tr:nth-child(even) td {
+            background: rgba(0, 0, 0, .03);
+        }
+
+        a {
+            color: #0b5ed7;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .notice {
+            margin-bottom: 1rem;
+            padding: .6rem .8rem;
+            background: rgba(0, 128, 0, .08);
+            border: 1px solid #9ad29a;
+            border-radius: .5rem;
+        }
+
+        .notice.deleted,
+        .notice.updated {
+            background: rgba(200, 0, 0, .08);
+            border-color: #e5a6a6;
+        }
+
+        .notice.updated {
+            background: rgba(0, 128, 0, .08);
+            border-color: #9ad29a;
+        }
+
+        .delete-form {
+            display: inline;
+        }
+
+        .delete-btn {
+            padding: .3rem .6rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: .3rem;
+            cursor: pointer;
+            font-size: .9rem;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+        .actions {
+            display: flex;
+            gap: .4rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>IIDX スコア一覧</h2>
+
+    <div class="toolbar">
+        <a href="/iidx/new">+ 新規追加</a>
+
+        <form method="get" action="/iidx">
+            <input type="search" name="q" placeholder="検索..." value="<%= query.q %>" aria-label="検索">
+            <input type="hidden" name="sort" value="<%= query.sort %>">
+            <input type="hidden" name="order" value="<%= query.order %>">
+            <button type="submit">検索</button>
+        </form>
+
+        <form method="get" action="/iidx" style="display:flex; gap:.4rem; align-items:center;">
+            <label>並び順:
+                <select name="sort" onchange="this.form.submit()">
+                    <option value="score" <%=query.sort==='score' ? 'selected' : '' %>>スコア</option>
+                    <option value="level" <%=query.sort==='level' ? 'selected' : '' %>>レベル</option>
+                    <option value="title" <%=query.sort==='title' ? 'selected' : '' %>>曲名</option>
+                    <option value="djLevel" <%=query.sort==='djLevel' ? 'selected' : '' %>>DJレベル</option>
+                    <option value="date" <%=query.sort==='date' ? 'selected' : '' %>>日付</option>
+                </select>
+            </label>
+            <label>
+                <select name="order" onchange="this.form.submit()">
+                    <option value="desc" <%=query.order==='desc' ? 'selected' : '' %>>降順</option>
+                    <option value="asc" <%=query.order==='asc' ? 'selected' : '' %>>昇順</option>
+                </select>
+            </label>
+            <input type="hidden" name="q" value="<%= query.q %>">
+            <noscript><button type="submit">適用</button></noscript>
+        </form>
+    </div>
+
+    <% if (added) { %>
+        <p class="notice">スコアを追加しました。</p>
+        <% } %>
+            <% if (updated) { %>
+                <p class="notice updated">スコアを更新しました。</p>
+                <% } %>
+                    <% if (deleted) { %>
+                        <p class="notice deleted">スコアを削除しました。</p>
+                        <% } %>
+
+                            <% if (Array.isArray(data) && data.length) { %>
+                                <div class="table-wrap">
+                                    <table role="grid">
+                                        <thead>
+                                            <tr>
+                                                <th>曲名</th>
+                                                <th>作曲者</th>
+                                                <th>ランプ</th>
+                                                <th>難易度</th>
+                                                <th>DJレベル</th>
+                                                <th>スコア</th>
+                                                <th>Lv</th>
+                                                <th>バージョン</th>
+                                                <th>日付</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% data.forEach(row=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= row.title %>
+                                                    </td>
+                                                    <td>
+                                                        <%= row.artist %>
+                                                    </td>
+                                                    <td>
+                                                        <%= row.lamp %>
+                                                    </td>
+                                                    <td>
+                                                        <%= row.difficulty %>
+                                                    </td>
+                                                    <td>
+                                                        <%= row.djLevel %>
+                                                    </td>
+                                                    <td>
+                                                        <%= row.score.toLocaleString("ja-JP") %>
+                                                    </td>
+                                                    <td>
+                                                        <%= row.level %>
+                                                    </td>
+                                                    <td>
+                                                        <%= row.version %>
+                                                    </td>
+                                                    <td>
+                                                        <%= row.date %>
+                                                    </td>
+                                                    <td>
+                                                        <div class="actions">
+                                                            <a href="/iidx/<%= row.id %>/edit">編集</a>
+                                                            <form method="post" action="/iidx/<%= row.id %>/delete"
+                                                                class="delete-form"
+                                                                onsubmit="return confirm('本当に削除しますか？');">
+                                                                <button type="submit" class="delete-btn"
+                                                                    aria-label="削除">削除</button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <% } else { %>
+                                    <p>条件に一致するスコアがありません。</p>
+                                    <% } %>
+</body>
+
+</html>

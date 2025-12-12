@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>IIDX <%= isEdit ? '編集' : '登録' %>
+    </title>
+</head>
+
+<body>
+    <h2>IIDX スコア<%= isEdit ? '編集' : '登録' %>
+    </h2>
+
+    <% if (errors && errors.length) { %>
+        <ul style="color:red">
+            <% errors.forEach(e=> { %>
+                <li>
+                    <%= e %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+
+            <form method="post" action="<%= isEdit ? `/${values.id}/update` : '/' %>">
+                <div>曲名: <input name="title" value="<%= values.title || '' %>" required></div>
+                <div>作曲者: <input name="artist" value="<%= values.artist || '' %>" required></div>
+                <div>Ver:
+                    <select name="version">
+                        <% VERSIONS.forEach(v=> { %>
+                            <option value="<%= v %>" <%=(values.version||'')===v ? 'selected' :'' %>><%= v %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </div>
+                <div>難易度:
+                    <select name="difficulty">
+                        <% DIFFICULTIES.forEach(d=> { %>
+                            <option value="<%= d %>" <%=(values.difficulty||'')===d ? 'selected' :'' %>><%= d %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </div>
+                <div>Lv:
+                    <select name="level">
+                        <% for (let lv=1; lv<=12; lv++) { %>
+                            <option value="<%= lv %>" <%=Number(values.level)===lv ? 'selected' :'' %>><%= lv %>
+                            </option>
+                            <% } %>
+                    </select>
+                </div>
+                <div>スコア: <input type="number" name="score" min="0" max="4000" value="<%= values.score || '' %>"
+                        required>
+                </div>
+                <div>DJ:
+                    <select name="djLevel">
+                        <% ["F","E","D","C","B","A","AA","AAA"].forEach(x=> { %>
+                            <option value="<%= x %>" <%=(values.djLevel||'')===x ? 'selected' :'' %>><%= x %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </div>
+                <div>ランプ:
+                    <select name="lamp">
+                        <% LAMPS.forEach(l=> { %>
+                            <option value="<%= l %>" <%=(values.lamp||'')===l ? 'selected' :'' %>><%= l %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </div>
+                <div>日付: <input type="date" name="date" value="<%= values.date || '' %>"></div>
+                <button type="submit">
+                    <%= isEdit ? '更新' : '登録' %>
+                </button>
+                <a href="/">一覧へ戻る</a>
+            </form>
+</body>
+
+</html>

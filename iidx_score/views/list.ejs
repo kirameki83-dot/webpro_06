@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>IIDX一覧</title>
+</head>
+
+<body>
+    <h2>IIDX スコア一覧</h2>
+    <a href="/new">+ 新規追加</a>
+    <% if (added) { %>
+        <p>追加しました</p>
+        <% } %>
+            <% if (updated) { %>
+                <p>更新しました</p>
+                <% } %>
+                    <% if (deleted) { %>
+                        <p>削除しました</p>
+                        <% } %>
+                            <table border="1" cellspacing="0" cellpadding="6">
+                                <thead>
+                                    <tr>
+                                        <th>曲名</th>
+                                        <th>作曲者</th>
+                                        <th>Ver</th>
+                                        <th>難易度</th>
+                                        <th>Lv</th>
+                                        <th>スコア</th>
+                                        <th>DJ</th>
+                                        <th>ランプ</th>
+                                        <th>日付</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% data.forEach(row=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= row.title %>
+                                            </td>
+                                            <td>
+                                                <%= row.artist %>
+                                            </td>
+                                            <td>
+                                                <%= row.version %>
+                                            </td>
+                                            <td>
+                                                <%= row.difficulty %>
+                                            </td>
+                                            <td>
+                                                <%= row.level %>
+                                            </td>
+                                            <td>
+                                                <%= row.score.toLocaleString("ja-JP") %>
+                                            </td>
+                                            <td>
+                                                <%= row.djLevel %>
+                                            </td>
+                                            <td>
+                                                <%= row.lamp %>
+                                            </td>
+                                            <td>
+                                                <%= row.date %>
+                                            </td>
+                                            <td>
+                                                <a href="/<%= row.id %>/edit">編集</a>
+                                                <form method="post" action="/<%= row.id %>/delete"
+                                                    style="display:inline" onsubmit="return confirm('削除しますか？');">
+                                                    <button type="submit">削除</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+</body>
+
+</html>

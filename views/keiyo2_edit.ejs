@@ -1,0 +1,22 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title><%= data.name %></title>
+</head>
+<body>
+  <h2><%= data.name %>の編集</h2>
+  <form action="/keiyo2/update/<%= data.id - 1 %>" method="POST">
+    <table>
+      <tr><th>項目</th><th>データ</th></tr>
+      <tr><td>ID</td><td><input type="text" name="code" value="<%= data.id %>"></td></tr>
+      <tr><td>駅名</td><td><input type="text" name="name" value="<%= data.name %>"></td></tr>
+      <tr><td>乗り換え線</td><td><input type="text" name="change" value="<%= data.change %>"></td></tr>
+      <tr><td>乗降客数</td><td><input type="text" name="passengers" value="<%= data.passengers %>"></td></tr>
+      <tr><td>東京駅からの距離</td><td><input type="text" name="distance" value="<%= data.distance %>"></td></tr>
+    </table>
+    <input type="submit" values="登録">
+  </form>
+  <a href="/keiyo2/">駅一覧に戻る</a>
+</body>
+</html>

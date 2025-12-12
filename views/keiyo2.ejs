@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>京葉線の駅</title>
+    <style>
+        :root {
+            color-scheme: light dark;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+            margin: 2rem;
+            line-height: 1.6;
+        }
+
+        h1,
+        h2 {
+            margin: 0 0 1rem;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 500px;
+        }
+
+        caption {
+            text-align: left;
+            font-weight: 600;
+            margin-bottom: .5rem;
+        }
+
+        th,
+        td {
+            padding: .6rem .8rem;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        thead th {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, .8);
+            backdrop-filter: blur(4px);
+        }
+
+        tbody tr:nth-child(even) td {
+            background: rgba(0, 0, 0, .03);
+        }
+
+        a {
+            color: #0b5ed7;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .empty {
+            padding: 1rem;
+            background: rgba(0, 0, 0, .03);
+            border: 1px solid #ccc;
+            border-radius: .5rem;
+        }
+
+        .code-badge {
+            display: inline-block;
+            padding: .15rem .5rem;
+            border: 1px solid #999;
+            border-radius: .375rem;
+            font-variant-numeric: tabular-nums;
+            background: rgba(0, 0, 0, .04);
+        }
+    </style>
+</head>
+
+<body>
+    <h2>京葉線の駅の詳細</h2>
+
+    <% if (Array.isArray(data) && data.length> 0) { %>
+        <div class="table-wrap">
+            <table role="grid">
+                <caption>京葉線の駅一覧</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">駅コード</th>
+                        <th scope="col">駅名</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% data.forEach((row)=> { %>
+                        <tr>
+                            <td>
+                                <%= row.id %>
+                            </td>
+                            <td><span class="code-badge">
+                                    <%= row.code %>
+                                </span></td>
+                            <td>
+                                <a href="/keiyo2/<%= encodeURIComponent(row.id) %>" aria-label="駅詳細: <%= row.name %>">
+                                    <%= row.name %>
+                                </a>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+        </div>
+        <% } else { %>
+            <p class="empty">表示できる駅データがありません。</p>
+            <% } %>
+</body>
+
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IIDX スコア<%= isEdit ? '編集' : '登録' %>
+    </title>
+    <style>
+        :root {
+            color-scheme: light dark;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+            margin: 2rem;
+            line-height: 1.6;
+        }
+
+        form {
+            max-width: 560px;
+            display: grid;
+            gap: .9rem;
+        }
+
+        label {
+            display: grid;
+            gap: .4rem;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            padding: .5rem .6rem;
+            border: 1px solid #aaa;
+            border-radius: .4rem;
+        }
+
+        .buttons {
+            display: flex;
+            gap: .6rem;
+        }
+
+        .error {
+            padding: .6rem .8rem;
+            background: rgba(200, 0, 0, .08);
+            border: 1px solid #e5a6a6;
+            border-radius: .5rem;
+        }
+
+        a {
+            color: #0b5ed7;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>IIDX スコア<%= isEdit ? '編集' : '登録' %>
+    </h2>
+
+    <% if (errors && errors.length) { %>
+        <div class="error">
+            <ul>
+                <% errors.forEach(e=> { %><li>
+                        <%= e %>
+                    </li>
+                    <% }) %>
+            </ul>
+        </div>
+        <% } %>
+
+            <form method="post" action="<%= isEdit ? `/iidx/${values.id}/update` : '/iidx' %>">
+                <label>曲名
+                    <input type="text" name="title" required value="<%= values.title || '' %>">
+                </label>
+
+                <label>作曲者
+                    <input type="text" name="artist" required value="<%= values.artist || '' %>">
+                </label>
+
+                <label>バージョン
+                    <select name="version" required>
+                        <% VERSIONS.forEach(v=> { %>
+                            <option value="<%= v %>" <%=(values.version||'')===v ? 'selected' : '' %>><%= v %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </label>
+
+                <label>難易度
+                    <select name="difficulty" required>
+                        <% DIFFICULTIES.forEach(d=> { %>
+                            <option value="<%= d %>" <%=(values.difficulty||'')===d ? 'selected' : '' %>><%= d %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </label>
+
+                <label>レベル
+                    <select name="level" required>
+                        <% for (let lv=1; lv<=12; lv++) { %>
+                            <option value="<%= lv %>" <%=Number(values.level)===lv ? 'selected' : '' %>><%= lv %>
+                            </option>
+                            <% } %>
+                    </select>
+                </label>
+
+                <label>スコア
+                    <input type="number" name="score" min="0" max="4000" step="1" required
+                        value="<%= values.score || '' %>">
+                </label>
+
+                <label>DJレベル
+                    <select name="djLevel" required>
+                        <% DJ_LEVELS.forEach(dj=> { %>
+                            <option value="<%= dj %>" <%=(values.djLevel||'')===dj ? 'selected' : '' %>><%= dj %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </label>
+
+                <label>ランプ
+                    <select name="lamp" required>
+                        <% LAMPS.forEach(l=> { %>
+                            <option value="<%= l %>" <%=(values.lamp||'')===l ? 'selected' : '' %>><%= l %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </label>
+
+                <label>プレイ日（省略可）
+                    <input type="date" name="date" value="<%= values.date || '' %>">
+                </label>
+
+                <div class="buttons">
+                    <button type="submit">
+                        <%= isEdit ? '更新' : '登録' %>
+                    </button>
+                    <a href="/iidx">一覧へ戻る</a>
+                </div>
+            </form>
+</body>
+
+</html>
