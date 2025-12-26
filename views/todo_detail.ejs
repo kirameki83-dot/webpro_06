@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>
+        <%= data.title %> - 詳細
+    </title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2rem;
+            background: #fafafa;
+        }
+
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+
+        th {
+            text-align: left;
+            padding: 0.5rem 0;
+            width: 100px;
+            color: #666;
+        }
+
+        td {
+            padding: 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+        }
+
+        .btn-edit {
+            background: #6200ea;
+        }
+
+        .btn-delete {
+            background: #d32f2f;
+        }
+
+        .btn-back {
+            background: #888;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>タスク詳細</h1>
+        <table>
+            <tr>
+                <th>ID</th>
+                <td>
+                    <%= data.id %>
+                </td>
+            </tr>
+            <tr>
+                <th>タイトル</th>
+                <td>
+                    <%= data.title %>
+                </td>
+            </tr>
+            <tr>
+                <th>期限</th>
+                <td>
+                    <%= data.limit %>
+                </td>
+            </tr>
+            <tr>
+                <th>優先度</th>
+                <td>
+                    <%= data.priority %>
+                </td>
+            </tr>
+            <tr>
+                <th>状態</th>
+                <td>
+                    <%= data.status %>
+                </td>
+            </tr>
+        </table>
+
+        <div class="actions">
+            <a href="/<%= data.id %>/edit" class="btn btn-edit">編集</a>
+            <form action="/<%= data.id %>/delete" method="POST">
+                <button type="submit" class="btn btn-delete" onclick="return confirm('本当に削除しますか？');">削除</button>
+            </form>
+            <a href="/" class="btn btn-back">戻る</a>
+        </div>
+    </div>
+</body>
+
+</html>

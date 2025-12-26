@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>履修科目管理</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2rem;
+            background-color: #fcfcfc;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 0.8rem;
+            text-align: left;
+        }
+
+        th {
+            background: #2980b9;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #27ae60;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .btn:hover {
+            background: #219150;
+        }
+
+        .link-detail {
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .link-detail:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>履修科目一覧</h1>
+    <a href="/create" class="btn">＋ 新規科目登録</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>科目名</th>
+                <th>担当教員</th>
+                <th>開講期</th>
+                <th>時限</th>
+                <th>単位</th>
+                <th>区分</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% data.forEach(item=> { %>
+                <tr>
+                    <td>
+                        <%= item.id %>
+                    </td>
+                    <td>
+                        <%= item.name %>
+                    </td>
+                    <td>
+                        <%= item.teacher %>
+                    </td>
+                    <td>
+                        <%= item.term %>
+                    </td>
+                    <td>
+                        <%= item.period %>
+                    </td>
+                    <td>
+                        <%= item.credits %>
+                    </td>
+                    <td>
+                        <%= item.type %>
+                    </td>
+                    <td><a href="/<%= item.id %>" class="link-detail">詳細</a></td>
+                </tr>
+                <% }); %>
+        </tbody>
+    </table>
+</body>
+
+</html>

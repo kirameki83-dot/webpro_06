@@ -9,7 +9,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/public", express.static(path.join(__dirname, "public")));
 
-// beatmania ルーターをマウント
 const beatmaniaRouter = require("./beatmania");
 app.use("/iidx", beatmaniaRouter);
 
@@ -101,94 +100,3 @@ app.post("/keiyo_add", (req, res) => {
 app.get("/keiyo", (req, res) => {
   res.render("db1", { data: station });
 });
-
-app.get("/hello1", (req, res) => {
-  res.render("show", { greet1: "Hello world", greet2: "Bon jour" });
-});
-
-app.get("/hello2", (req, res) => {
-  res.render("show", { greet1: "Hello world", greet2: "Bon jour" });
-});
-
-app.get("/icon", (req, res) => {
-  res.render("icon", { filename: "./public/Apple_logo_black.svg", alt: "Apple Logo" });
-});
-
-app.get("/omikuji1", (req, res) => {
-  const num = Math.floor(Math.random() * 6 + 1);
-  const map = { 1: "大吉", 2: "中吉", 3: "小吉", 4: "吉", 5: "末吉", 6: "凶" };
-  const luck = map[num] || "吉";
-  res.send("今日の運勢は" + luck + "です");
-});
-
-app.get("/omikuji2", (req, res) => {
-  const num = Math.floor(Math.random() * 6 + 1);
-  const map = { 1: "大吉", 2: "中吉", 3: "小吉", 4: "吉", 5: "末吉", 6: "凶" };
-  const luck = map[num] || "吉";
-  res.render("omikuji2", { result: luck });
-});
-
-const normalizeHand = (h) => {
-  const key = String(h ?? "").toLowerCase();
-  const map = {
-    "0": "グー",
-    "1": "チョキ",
-    "2": "パー",
-    rock: "グー",
-    scissors: "チョキ",
-    paper: "パー",
-    "グー": "グー",
-    "ちょき": "チョキ",
-    "チョキ": "チョキ",
-    "ぱー": "パー",
-    "パー": "パー",
-  };
-  return map[key] || "グー";
-};
-const judge = (you, cpu) => {
-  if (you === cpu) return "あいこ";
-  if (
-    (you === "グー" && cpu === "チョキ") ||
-    (you === "チョキ" && cpu === "パー") ||
-    (you === "パー" && cpu === "グー")
-  )
-    return "勝ち";
-  return "負け";
-};
-
-app.get("/janken", (req, res) => {
-  const yourHand = normalizeHand(req.query.hand);
-  const num = Math.floor(Math.random() * 3 + 1);
-  const cpu = num === 1 ? "グー" : num === 2 ? "チョキ" : "パー";
-
-  let win = toInt(req.query.win) ?? 0;
-  let total = toInt(req.query.total) ?? 0;
-
-  const result = judge(yourHand, cpu);
-  if (result === "勝ち") win += 1;
-  total += 1;
-
-  res.render("janken", {
-    your: yourHand,
-    cpu,
-    judgement: result,
-    win,
-    total,
-  });
-});
-
-// 404
-app.use((req, res) => {
-  res.status(404).send("Not Found");
-});
-
-// 500
-// eslint-disable-next-line no-unused-vars
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).send("Internal Server Error");
-});
-
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`));
-

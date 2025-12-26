@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>ToDo List</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2rem;
+            background-color: #fafafa;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #6200ea;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .card-list {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        }
+
+        .card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #ccc;
+        }
+
+        .card h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .priority-高 {
+            border-left-color: #d32f2f;
+        }
+
+        .priority-中 {
+            border-left-color: #fbc02d;
+        }
+
+        .priority-低 {
+            border-left-color: #388e3c;
+        }
+
+        .status-完了 {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .meta {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .link-detail {
+            font-size: 0.9rem;
+            color: #6200ea;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>ToDoリスト</h1>
+    <a href="/create" class="btn">＋ 新しいタスク</a>
+
+    <div class="card-list">
+        <% data.forEach(item=> { %>
+            <div class="card priority-<%= item.priority %>">
+                <h3 class="status-<%= item.status %>">
+                    <%= item.title %>
+                </h3>
+                <div class="meta">
+                    期限: <%= item.limit %> / 優先度: <%= item.priority %> / 状態: <%= item.status %>
+                </div>
+                <a href="/<%= item.id %>" class="link-detail">詳細を開く</a>
+            </div>
+            <% }); %>
+    </div>
+</body>
+
+</html>

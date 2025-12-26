@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>
+        <%= isEdit ? 'タスク編集' : '新規タスク' %>
+    </title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2rem;
+            background: #fafafa;
+        }
+
+        .container {
+            max-width: 400px;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 0.5rem;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.7rem;
+            background: #6200ea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 1rem;
+            list-style-position: inside;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>
+            <%= isEdit ? 'タスク編集' : '新規タスク作成' %>
+        </h1>
+
+        <% if (errors.length> 0) { %>
+            <ul class="error">
+                <% errors.forEach(e=> { %> <li>
+                        <%= e %>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } %>
+
+                <form action="<%= isEdit ? '/' + values.id + '/update' : '/create' %>" method="POST">
+                    <div class="form-group">
+                        <label>タスク名</label>
+                        <input type="text" name="title" value="<%= values.title || '' %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label>期限</label>
+                        <input type="date" name="limit" value="<%= values.limit || '' %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label>優先度</label>
+                        <select name="priority">
+                            <option value="高" <%=values.priority==='高' ? 'selected' : '' %>>高</option>
+                            <option value="中" <%=values.priority==='中' ? 'selected' : '' %>>中</option>
+                            <option value="低" <%=values.priority==='低' ? 'selected' : '' %>>低</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>状態</label>
+                        <select name="status">
+                            <option value="未完了" <%=values.status==='未完了' ? 'selected' : '' %>>未完了</option>
+                            <option value="完了" <%=values.status==='完了' ? 'selected' : '' %>>完了</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn">
+                        <%= isEdit ? '保存' : '作成' %>
+                    </button>
+                </form>
+                <a href="/" style="display:block; text-align:center; margin-top:1rem;">キャンセル</a>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>
+        <%= data.title %> - 詳細
+    </title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2rem;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 0.5rem;
+            text-align: left;
+        }
+
+        th {
+            background: #f0f0f0;
+            width: 150px;
+        }
+
+        .actions {
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            background: #007bff;
+            color: white;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>
+        <%= data.title %> の詳細
+    </h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <td>
+                <%= data.id %>
+            </td>
+        </tr>
+        <tr>
+            <th>タイトル</th>
+            <td>
+                <%= data.title %>
+            </td>
+        </tr>
+        <tr>
+            <th>アーティスト</th>
+            <td>
+                <%= data.artist %>
+            </td>
+        </tr>
+        <tr>
+            <th>バージョン</th>
+            <td>
+                <%= data.version %>
+            </td>
+        </tr>
+        <tr>
+            <th>難易度</th>
+            <td>
+                <%= data.difficulty %>
+            </td>
+        </tr>
+        <tr>
+            <th>レベル</th>
+            <td>
+                <%= data.level %>
+            </td>
+        </tr>
+        <tr>
+            <th>スコア</th>
+            <td>
+                <%= data.score %>
+            </td>
+        </tr>
+        <tr>
+            <th>DJレベル</th>
+            <td>
+                <%= data.djLevel %>
+            </td>
+        </tr>
+        <tr>
+            <th>ランプ</th>
+            <td>
+                <%= data.lamp %>
+            </td>
+        </tr>
+        <tr>
+            <th>プレイ日</th>
+            <td>
+                <%= data.date %>
+            </td>
+        </tr>
+    </table>
+
+    <div class="actions">
+        <a href="/<%= data.id %>/edit" class="btn">編集</a>
+        <form action="/<%= data.id %>/delete" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('本当に削除しますか？');">削除</button>
+        </form>
+        <a href="/" class="btn" style="background: gray;">一覧に戻る</a>
+    </div>
+</body>
+
+</html>
