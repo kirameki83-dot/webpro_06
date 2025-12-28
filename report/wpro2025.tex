@@ -1,0 +1,93 @@
+\documentclass[a4paper,11pt]{jsarticle}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+
+
+\title{Webプログラミング 期末レポート 仕様書}
+\author{25g1146 渡邊煌基}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\begin{center}
+    \url{https://github.com/kirameki83-dot/webpro_06}
+\end{center}
+
+\section{はじめに}
+本課題では，共通の操作感（一覧表示，詳細表示，追加，変更，削除）を持つ3つのWebアプリケーションを作成した．
+全てのアプリケーションはデータベースを使用せず，変数内でデータを管理する実装を行っている．
+また，ソースコードは Github (\url{https://github.com/kirameki83-dot/webpro_06}) にて公開している．
+
+\section{開発したアプリケーション}
+\subsection{IIDX Score Manager}
+音楽ゲーム「beatmania IIDX」のスコアを管理するツール．
+ユーザーはプレイした楽曲のスコア，難易度，クリアランプ等を記録できる．
+
+\subsection{Course Manager}
+大学の授業科目を管理するツール．
+科目名，担当教員，開講期（前期・後期など），時限，単位数，区分（必修・選択など）を登録し，
+履修計画の確認や単位数の計算（目視確認）に役立てる．
+
+\subsection{To-Do List}
+日常のタスクを管理するシンプルなアプリケーション．
+タスク名，期限，優先度，状態（未完了・完了）を管理し，すべきことを整理できる．
+
+\section{利用者向けマニュアル}
+\subsection{共通操作}
+全てのアプリケーションで以下の操作は共通している．
+\begin{itemize}
+    \item \textbf{一覧表示}: アプリケーションのトップページにアクセスすると，登録されているデータのリストが表示される．
+    \item \textbf{詳細表示}: リスト内の「詳細」リンクをクリックすると，そのデータの詳細情報が表示される．
+    \item \textbf{新規作成}: 一覧画面の「新規登録/作成」ボタンから，新しいデータを登録できる．
+    \item \textbf{編集}: 詳細画面の「編集」ボタンから，既存データを修正できる．
+    \item \textbf{削除}: 詳細画面の「削除」ボタンをクリックすると，確認ダイアログが表示され，OKを押すとデータが削除される．
+\end{itemize}
+
+\subsection{各アプリ固有の項目}
+\begin{itemize}
+    \item \textbf{IIDX Score Manager}: バージョン，難易度，DJレベル，ランプなどはプルダウンから選択する形式となっている．
+    \item \textbf{Course Manager}: 開講期や区分は大学のカリキュラムに合わせて選択する．
+    \item \textbf{To-Do List}: 優先度によって一覧表示時の左側の色が変化する（高：赤，中：黄，低：緑）．完了状態にすると取り消し線が表示される．
+\end{itemize}
+
+\section{管理者向けマニュアル}
+本システムは Node.js 環境で動作する．
+
+\subsection{デプロイ手順}
+\begin{enumerate}
+    \item ソースコード一式をサーバーに配置する．
+    \item コンソールでディレクトリに移動し，\texttt{npm install} を実行して依存ライブラリをインストールする．
+    \item 各アプリケーションの起動コマンドを実行する．
+    \begin{itemize}
+        \item IIDX: \texttt{node app\_iidx.js} (Port: 8081)
+        \item Course: \texttt{node app\_course.js} (Port: 8082)
+        \item ToDo: \texttt{node app\_todo.js} (Port: 8083)
+    \end{itemize}
+    \item ブラウザで \texttt{http://localhost:[ポート番号]} にアクセスして動作を確認する．
+\end{enumerate}
+
+\section{開発者向けマニュアル}
+\subsection{技術スタック}
+\begin{itemize}
+    \item \textbf{Node.js}: サーバーサイド実行環境．
+    \item \textbf{Express}: Webアプリケーションフレームワーク．ルーティングやミドルウェアの利用を容易にするために採用．
+    \item \textbf{EJS}: テンプレートエンジン．HTML内にJavaScriptを埋め込み，動的なページ生成を行うために採用．
+\end{itemize}
+
+\subsection{実装の詳細}
+\subsubsection{データ管理}
+課題要件に従い，データベースは使用せず，グローバル変数（配列）にてデータを管理している．
+サーバーを再起動するとデータは初期化される仕様である．
+各データには一意のIDが付与され，CRUD操作はこのIDを用いて対象を特定する．
+
+\subsubsection{Strict Mode}
+全てのJSファイルの先頭に \texttt{"use strict";} を記述している．
+これにより，未宣言変数の使用や，予約語の使用などをエラーとして検出し，より安全なコード記述を強制している．
+
+\subsubsection{スタイル}
+CSSは各テンプレートファイル内に記述，または共通のスタイル定義を用いている．
+それぞれのアプリケーションのテーマカラー（IIDX:青/黒, Course:緑/白, ToDo:紫/白）を設定し，視認性を高めている．
+
+\end{document}

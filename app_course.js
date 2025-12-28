@@ -9,13 +9,21 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 
-// Data
+// Data (In-memory)
 let courses = [
-    { id: 1, name: "Webプログラミング", teacher: "鈴木正人", term: "後期", period: "金曜5限", credits: 2, type: "必修" },
-    { id: 2, name: "データベース", teacher: "佐藤一郎", term: "前期", period: "月曜2限", credits: 2, type: "選択" },
-    { id: 3, name: "情報セキュリティ", teacher: "田中太郎", term: "後期", period: "水曜3限", credits: 2, type: "選択" },
+    { id: 1, name: "言語と文化２ 中国語_情工", teacher: "王 瑞来", term: "後期", period: "月曜 3限", credits: 2, type: "必修" },
+    { id: 2, name: "英語理解２ｃクラス", teacher: "小山 努", term: "後期", period: "月曜 6限", credits: 1, type: "選択" },
+    { id: 3, name: "データ通信情工", teacher: "水本 旭洋", term: "後期", period: "火曜 1限", credits: 2, type: "必修" },
+    { id: 4, name: "データサイエンス情工", teacher: "三木 大輔", term: "後期", period: "火曜 6限", credits: 2, type: "必修" },
+    { id: 5, name: "キャリアデザイン１ 情工", teacher: "長谷川 武", term: "後期", period: "水曜 1限", credits: 1, type: "必修" },
+    { id: 6, name: "アジャイルワーク１ 情工", teacher: "三木 大輔", term: "後期", period: "水曜 6限", credits: 2, type: "必修" },
+    { id: 7, name: "微分積分情工 b・cクラス", teacher: "山下 温", term: "後期", period: "木曜 2限", credits: 2, type: "選択" },
+    { id: 8, name: "英語表現２ｃクラス", teacher: "霜田 敦子", term: "後期", period: "木曜 5限", credits: 1, type: "選択" },
+    { id: 9, name: "倫理学", teacher: "富山 豊", term: "後期", period: "木曜 7限", credits: 1, type: "必修" },
+    { id: 10, name: "Webプログラミング情工", teacher: "須田 宇宙", term: "後期", period: "金曜 3限", credits: 2, type: "必修" }
+
 ];
-let nextId = 4;
+let nextId = 11;
 
 // Utils
 const toInt = (v) => {
@@ -57,6 +65,7 @@ function addCourse(raw) {
         type: raw.type || "選択"
     };
     courses.push(newItem);
+
     return { ok: true, item: newItem };
 }
 

@@ -9,11 +9,11 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 
-// Data
+// Data (In-memory)
 let todos = [
-    { id: 1, title: "Webプログラミングの課題", limit: "2023-12-30", priority: "高", status: "未完了" },
-    { id: 2, title: "バイトのシフト提出", limit: "2023-12-25", priority: "中", status: "完了" },
-    { id: 3, title: "冬休みの予定を立てる", limit: "2024-01-05", priority: "低", status: "未完了" },
+    { id: 1, title: "Webプログラミングの課題", limit: "2023-12-28", priority: "高", status: "未完了" },
+    { id: 2, title: "帰省の荷造り", limit: "2023-12-27", priority: "中", status: "完了" },
+    { id: 3, title: "大掃除", limit: "2024-01-05", priority: "高", status: "未完了" },
 ];
 let nextId = 4;
 
@@ -51,6 +51,7 @@ function addTodo(raw) {
         status: raw.status || "未完了"
     };
     todos.push(newItem);
+
     return { ok: true, item: newItem };
 }
 

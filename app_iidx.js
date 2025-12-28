@@ -10,12 +10,44 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 
 // Data (In-memory)
-let scores = [
-    { id: 1, title: "Blue Rain", artist: "dj TAKA VS Ryu☆", version: "BISTROVER", difficulty: "HYPER", level: 10, score: 1820, djLevel: "AA", lamp: "HARD CLEAR", date: "2023-11-14" },
-    { id: 2, title: "V", artist: "TAKA respect for J.S.B.", version: "3rd style", difficulty: "ANOTHER", level: 12, score: 1890, djLevel: "AA", lamp: "CLEAR", date: "2023-11-12" },
-    { id: 3, title: "Sparkle Shower", artist: "SYUNN", version: "SINOBUZ", difficulty: "ANOTHER", level: 11, score: 1750, djLevel: "A", lamp: "CLEAR", date: "2023-11-10" },
-];
-let nextId = 4;
+const fs = require("fs");
+const DATA_FILE = path.join(__dirname, "data_iidx.json");
+
+// Data (In-memory + JSON Persistence)
+let scores = [];
+let nextId = 1;
+
+// Load Data
+try {
+    const data = fs.readFileSync(DATA_FILE, "utf-8");
+    scores = JSON.parse(data);
+    if (scores.length > 0) {
+        nextId = Math.max(...scores.map((s) => s.id)) + 1;
+    } else {
+        nextId = 1;
+    }
+} catch (err) {
+    // Default Data if file doesn't exist
+    scores = [
+        { id: 1, title: "BatlleRoyal", artist: "Blacklolita", version: "Sparkle Shower", difficulty: "HYPER", level: 9, score: 1446, djLevel: "AA", lamp: "CLEAR", date: "2025-11-13" },
+        { id: 2, title: "ZZ", artist: "D.J.Amuro", version: "PENDUAL", difficulty: "ANOTHER", level: 12, score: 1647, djLevel: "AA", lamp: "FAILED", date: "2025-11-13" },
+        { id: 3, title: "スパークリング☆彡ハイパーチューン！！", artist: "Machico", version: "Pinky Crush", difficulty: "ANOTHER", level: 12, score: 2249, djLevel: "B", lamp: "ASSIST EASY", date: "2025-11-13" },
+        { id: 4, title: "Lisa-RICCIA", artist: "DJ YOSHITAKA", version: "Sparkle Shower", difficulty: "ANOTHER", level: 12, score: 2141, djLevel: "B", lamp: "FAILED", date: "2025-11-19" },
+        { id: 5, title: "Lisa-RICCIA", artist: "DJ YOSHITAKA", version: "Sparkle Shower", difficulty: "HYPER", level: 10, score: 1703, djLevel: "A", lamp: "CLEAR", date: "2025-11-19" },
+        { id: 6, title: "Ska-sh All Neutrons!!", artist: "かめりあ feat. ななひら", version: "HEROIC VERSE", difficulty: "ANOTHER", level: 10, score: 1485, djLevel: "B", lamp: "CLEAR", date: "2025-12-12" },
+        { id: 7, title: "おーまい！らぶりー！すうぃーてぃ！だーりん！", artist: "BEMANI Sound Team PON feat.NU-KO", version: "Rootage", difficulty: "ANOTHER", level: 11, score: 1995, djLevel: "B", lamp: "CLEAR", date: "2025-12-12" },
+        { id: 8, title: "Red. by Full Metal Jacket", artist: "DJ Mass MAD Ism*", version: "SIRIUS", difficulty: "HYPER", level: 10, score: 1369, djLevel: "B", lamp: "ASSIST EASY", date: "2025-11-12" },
+        { id: 9, title: "PopなEDEN", artist: "YASUHIRO feat.橘田ほのか", version: "Pinky Crush", difficulty: "ANOTHER", level: 11, score: 1785, djLevel: "A", lamp: "HARD CLEAR", date: "2025-11-12" },
+        { id: 10, title: "狂水一華", artist: "BEMANI Sound Team “HuΣeR Vs. SYUNN” feat.いちか", version: "Heroic Verse", difficulty: "ANOTHER", level: 11, score: 1844, djLevel: "A", lamp: "CLEAR", date: "2025-11-12" },
+        { id: 11, title: "quasar", artist: "OutPhase", version: "9th style", difficulty: "ANOTHER", level: 11, score: 1527, djLevel: "B", lamp: "EASY CLEAR", date: "2025-11-12" },
+        { id: 12, title: "AO-1", artist: "電龍", version: "copula", difficulty: "HYPER", level: 10, score: 1469, djLevel: "A", lamp: "CLEAR", date: "2025-11-12" },
+        { id: 13, title: "Fervidex", artist: "Feryquitous", version: "CANNON BALLERS", difficulty: "HYPER", level: 9, score: 1584, djLevel: "AA", lamp: "FULL COMBO", date: "2025-11-12" },
+        { id: 14, title: "ランカーキラーガール", artist: "中島由貴", version: "HEROIC VERSE", difficulty: "ANOTHER", level: 11, score: 2070, djLevel: "A", lamp: "CLEAR", date: "2025-10-31" },
+        { id: 15, title: "tell me what you wish feat.らっぷびと", artist: "Pizuya's Cell", version: "BISTROVER", difficulty: "ANOTHER", level: 11, score: 2291, djLevel: "AA", lamp: "CLEAR", date: "2025-10-31" },
+        { id: 16, title: "閃と雷管とロープ", artist: "めと（Metomate）", version: "Sparkle Shower", difficulty: "ANOTHER", level: 11, score: 1491, djLevel: "A", lamp: "CLEAR", date: "2025-10-31" },
+    ];
+    nextId = 17;
+}
 
 // Constants
 const DIFFICULTIES = ["BEGINNER", "NORMAL", "HYPER", "ANOTHER", "LEGGENDARIA"];
@@ -26,7 +58,7 @@ const VERSIONS = [
     "IIDX RED", "HAPPY SKY", "DistorteD", "GOLD", "DJ TROOPERS", "EMPRESS",
     "SIRIUS", "Resort Anthem", "Lincle", "tricoro", "SPADA", "PENDUAL",
     "copula", "SINOBUZ", "CANNON BALLERS", "Rootage", "HEROIC VERSE",
-    "BISTROVER", "CastHour", "RESIDENT", "EPOLIS"
+    "BISTROVER", "CastHour", "RESIDENT", "EPOLIS", "Pinky Crush", "Sparkle Shower"
 ];
 const DJ_LEVELS = ["F", "E", "D", "C", "B", "A", "AA", "AAA"];
 
@@ -67,6 +99,7 @@ function addScore(raw) {
         date: raw.date || new Date().toISOString().split("T")[0],
     };
     scores.push(newItem);
+
     return { ok: true, item: newItem };
 }
 
@@ -108,7 +141,7 @@ function validate(raw) {
     const level = toInt(raw.level);
     if (level === null || level < 1 || level > 12) errors.push("レベルは 1〜12 の数値で入力してください。");
     const score = toInt(raw.score);
-    if (score === null || score < 0 || score > 4000) errors.push("スコアは 0〜4000 の数値で入力してください。");
+    if (score === null || score < 0 || score > 10000) errors.push("スコアは 0〜10000 の数値で入力してください。");
     if (!normalizeFromSet(raw.djLevel, DJ_LEVELS)) errors.push("DJレベルは選択肢から選んでください。");
     if (!normalizeFromSet(raw.lamp, LAMPS)) errors.push("ランプは選択肢から選んでください。");
     return errors;
